@@ -69,21 +69,38 @@ button {
   background: green;
   color: white;
 }
-
-/* checkboxes */
 .boxes {
   background: white;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* عمودين ثابتين */
+  gap: 12px;
+
+  width: 100%;
+  box-sizing: border-box;
 }
 
+/* كل عنصر */
 .boxes label {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
-  font-weight: normal;
+
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+
+  background: #f9f9f9;
+
+  font-size: 14px;
+
+  /* 🔥 أهم إصلاح */
+  min-width: 0;           /* يمنع الخروج برا */
+  overflow-wrap: anywhere; /* يكسر النص إذا طويل */
 }
+
 
 /* table */
 table {
@@ -102,6 +119,17 @@ td, th {
 hr {
   margin: 15px 0;
 }
+/* 📱 على الموبايل نخليها عمودين مضبوطين */
+@media (max-width: 600px) {
+  .boxes {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .boxes label {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
 </style>
 
 </head>
@@ -117,7 +145,7 @@ hr {
 
 <label>شو صار بالشفت</label>
 <textarea id="shift"></textarea>
-
+<br>
 <label>شغلات ناقصة</label>
 <textarea id="missing"></textarea>
 

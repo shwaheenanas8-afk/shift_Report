@@ -67,7 +67,7 @@ button {
   color: white;
 }
 
-/* 🔥 BOXES (التعديل الجديد) */
+/* 🔥 BOXES (حل المشكلة نهائياً) */
 .boxes {
   background: white;
   padding: 10px;
@@ -76,9 +76,11 @@ button {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
+
+  align-items: flex-start;
 }
 
-/* 🔥 شكل كل عنصر */
+/* 🔥 كل عنصر داخل البوكس */
 .boxes label {
   display: flex;
   align-items: center;
@@ -89,7 +91,18 @@ button {
   border-radius: 8px;
 
   background: #f9f9f9;
-  white-space: nowrap;
+
+  /* 🔥 أهم تعديل */
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+/* 🔥 تحسين للموبايل */
+@media (max-width: 600px) {
+  .boxes label {
+    flex: 1 1 45%;
+  }
 }
 
 table {
@@ -133,7 +146,7 @@ hr {
 
 <h3>الأقل مبيعاً</h3>
 <div id="worstBox" class="boxes"></div>
-<br>
+
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 
@@ -197,7 +210,7 @@ window.onload = () => {
   });
 };
 
-// 🔥 جدول الصوصات
+// 🔥 إضافة صف جدول
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -220,7 +233,7 @@ function addCheck(name){
   `;
 }
 
-// 🔥 إضافة صوص
+// 🔥 إضافة صوص جديد
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){

@@ -3,98 +3,89 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shift Report</title>
+<title>تقرير الشفت</title>
 
 <style>
-body{
+body {
   font-family: Arial;
   direction: rtl;
-  margin:0;
-  background:#f2f2f2;
+  margin: 0;
+  background: #f2f2f2;
 }
 
-.container{
-  max-width:600px;
-  margin:auto;
-  padding:15px;
+.container {
+  padding: 15px;
+  max-width: 650px;
+  margin: auto;
 }
 
-h2{
-  text-align:center;
+h2 {
+  text-align: center;
 }
 
-/* inputs */
-input, textarea, select{
-  width:100%;
-  padding:12px;
-  margin:6px 0 12px;
-  border-radius:10px;
-  border:1px solid #ccc;
-  box-sizing:border-box;
-  font-size:16px; /* مهم للموبايل */
+label {
+  font-weight: bold;
+  font-size: 14px;
 }
 
-/* 🔥 الأكثر / الأقل */
-.boxes{
-  background:#fff;
-  padding:10px;
-  border-radius:10px;
+input, textarea, select {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
-.item{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  padding:8px;
-  font-size:16px;
+textarea {
+  min-height: 60px;
 }
 
-.item input{
-  width:20px;
-  height:20px;
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
 }
 
-/* 🔥 الصوصات (أهم جزء) */
-.sauce{
-  background:#fff;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:10px;
+.add-btn {
+  background: #007bff;
+  color: white;
 }
 
-.sauce-name{
-  font-weight:bold;
-  margin-bottom:6px;
+.copy-btn {
+  background: green;
+  color: white;
 }
 
-.sauce input{
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  font-size:16px;
+.boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
 }
 
-/* buttons */
-button{
-  width:100%;
-  padding:12px;
-  margin-top:10px;
-  border:none;
-  border-radius:10px;
-  font-size:16px;
+.boxes label {
+  font-size: 13px;
+  font-weight: normal;
 }
 
-.add{background:#007bff;color:#fff;}
-.copy{background:green;color:#fff;}
-
+hr {
+  margin: 15px 0;
+}
 </style>
-</head>
 
+</head>
 <body>
 
 <div class="container">
 
-<h2>📋 Shift Report</h2>
+<h2>📋 تقرير الشفت</h2>
 
 <label>تاريخ الشفت</label>
 <input type="date" id="date">
@@ -102,107 +93,121 @@ button{
 <label>شو صار بالشفت</label>
 <textarea id="shift"></textarea>
 
+<label>شغلات ناقصة</label>
+<textarea id="missing"></textarea>
+
 <h3>الأكثر مبيعاً</h3>
 <div id="bestBox" class="boxes"></div>
 
 <h3>الأقل مبيعاً</h3>
 <div id="worstBox" class="boxes"></div>
 
+<label>شغلات بدها صيانة</label>
+<textarea id="maintenance"></textarea>
+
 <h3>الصوصات</h3>
-<div id="sauceBox"></div>
 
-<button class="add" onclick="addSauce()">➕ إضافة صوص</button>
+<table id="table">
+<tr>
+<th>الصوص</th>
+<th>كمية</th>
+<th>تاريخ</th>
+</tr>
+</table>
 
+<button class="add-btn" onclick="addSauce()">➕ إضافة صوص</button>
+
+<!-- 🔥 هاد القسم صار تحت الصوصات -->
 <hr>
 
-<input id="cashier" placeholder="مين سكر الكاش">
-<input id="scrap" placeholder="مين رفع السكراب">
+<label>مين سكر الكاش</label>
+<input type="text" id="cashier">
 
+<label>مين رفع السكراب</label>
+<input type="text" id="scrap">
+
+<label>أوبريت</label>
 <select id="operait">
-  <option value="">أوبريت</option>
+  <option value="">اختر</option>
   <option value="100%">100%</option>
   <option value="خربان">خربان</option>
 </select>
 
-<button class="copy" onclick="generate()">📋 نسخ التقرير</button>
+<button class="copy-btn" onclick="generate()">📋 نسخ التقرير</button>
 
 </div>
 
 <script>
 
 let sauces = [
-"pistachio","hazelnut","chai karak",
-"white mocha","hot chocolate",
-"spanish latte","salted caramel","rose","lotus"
+"pistachio","hazelnut","chai karak","white mocha",
+"hot chocolate","spanish","salted honey","rose","lotus"
 ];
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("date").value =
-  new Date().toISOString().split('T')[0];
-
-  render();
-});
-
-function render(){
-
-  let bestBox = document.getElementById("bestBox");
-  let worstBox = document.getElementById("worstBox");
-  let sauceBox = document.getElementById("sauceBox");
-
-  bestBox.innerHTML = "";
-  worstBox.innerHTML = "";
-  sauceBox.innerHTML = "";
+window.onload = () => {
+  let today = new Date().toISOString().split('T')[0];
+  document.getElementById("date").value = today;
 
   sauces.forEach(s => {
-
-    bestBox.innerHTML += `
-      <label class="item">
-        <input type="checkbox" value="${s}">
-        ${s}
-      </label>
-    `;
-
-    worstBox.innerHTML += `
-      <label class="item">
-        <input type="checkbox" value="${s}">
-        ${s}
-      </label>
-    `;
-
-    sauceBox.innerHTML += `
-      <div class="sauce">
-        <div class="sauce-name">${s}</div>
-        <input type="number" placeholder="الكمية">
-        <input type="date">
-      </div>
-    `;
+    addRow(s);
+    addCheck(s);
   });
+
+  loadData();
+};
+
+function addRow(name="") {
+  let row = document.getElementById("table").insertRow();
+
+  row.innerHTML = `
+    <td><input value="${name}"></td>
+    <td><input type="number" placeholder="0"></td>
+    <td><input placeholder="29/4"></td>
+  `;
 }
 
-function addSauce(){
+function addCheck(name){
+  document.getElementById("bestBox").innerHTML += `
+    <label><input type="checkbox" value="${name}"> ${name}</label>
+  `;
+
+  document.getElementById("worstBox").innerHTML += `
+    <label><input type="checkbox" value="${name}"> ${name}</label>
+  `;
+}
+
+function addSauce() {
   let name = prompt("اسم الصوص:");
   if(name){
-    sauces.push(name);
-    render();
+    addRow(name);
+    addCheck(name);
   }
 }
 
-function generate(){
+function generate() {
+
+  let cashier = document.getElementById("cashier").value;
+  let scrap = document.getElementById("scrap").value;
+  let operait = document.getElementById("operait").value;
+
+  let date = document.getElementById("date").value;
+  let shiftText = document.getElementById("shift").value;
+  let missingText = document.getElementById("missing").value;
+  let maintenanceText = document.getElementById("maintenance").value;
 
   let best = [];
-  document.querySelectorAll("#bestBox input:checked")
-  .forEach(x => best.push(x.value));
+  document.querySelectorAll("#bestBox input:checked").forEach(c => best.push(c.value));
 
   let worst = [];
-  document.querySelectorAll("#worstBox input:checked")
-  .forEach(x => worst.push(x.value));
+  document.querySelectorAll("#worstBox input:checked").forEach(c => worst.push(c.value));
 
-  let cards = document.querySelectorAll(".sauce");
+  let report = `shift ${date}
 
-  let report = `
-shift ${document.getElementById("date").value}
+شو صار بالشفت:
+${shiftText}
 
-${document.getElementById("shift").value}
+شغلات ناقصة:
+${missingText}
 
 الأكثر مبيعاً:
 ${best.join(", ")}
@@ -210,25 +215,61 @@ ${best.join(", ")}
 الأقل مبيعاً:
 ${worst.join(", ")}
 
+شغلات بدها صيانة:
+${maintenanceText}
+
 الصوصات:
 `;
 
-  cards.forEach(c => {
-    let name = c.querySelector(".sauce-name").innerText;
-    let qty = c.querySelectorAll("input")[0].value;
-    let date = c.querySelectorAll("input")[1].value;
+  let rows = document.getElementById("table").rows;
 
-    report += `${name} - ${qty || 0} - ${date}\n`;
-  });
+  for(let i=1;i<rows.length;i++){
+    let inputs = rows[i].querySelectorAll("input");
 
-  report += `
-مين سكر الكاش: ${cashier.value}
-مين رفع السكراب: ${scrap.value}
-أوبريت: ${operait.value}
+    let name = inputs[0].value.trim();
+    let qty = inputs[1].value.trim();
+    let exp = inputs[2].value.trim();
+
+    if(name){
+      report += `${name} ${qty || 0} ${exp}\n`;
+    }
+  }
+
+  // 🔥 القسم صار تحت الصوصات في التقرير كمان
+  report += `\nمين سكر الكاش: ${cashier}
+مين رفع السكراب: ${scrap}
+أوبريت: ${operait}
 `;
 
   navigator.clipboard.writeText(report);
-  alert("تم النسخ ✅");
+  alert("✅ تم نسخ التقرير");
+
+  saveData();
+}
+
+function saveData(){
+  localStorage.setItem("shiftData", JSON.stringify({
+    cashier: cashier.value,
+    scrap: scrap.value,
+    operait: operait.value,
+    date: date.value,
+    shift: shift.value,
+    missing: missing.value,
+    maintenance: maintenance.value
+  }));
+}
+
+function loadData(){
+  let data = JSON.parse(localStorage.getItem("shiftData"));
+  if(!data) return;
+
+  cashier.value = data.cashier || "";
+  scrap.value = data.scrap || "";
+  operait.value = data.operait || "";
+  date.value = data.date || "";
+  shift.value = data.shift || "";
+  missing.value = data.missing || "";
+  maintenance.value = data.maintenance || "";
 }
 
 </script>

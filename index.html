@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 🔥 منع الزوم نهائياً -->
+<!-- 🔥 منع الزوم -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>تقرير الشفت</title>
 
 <style>
+
 body {
   font-family: Arial;
   direction: rtl;
@@ -26,7 +27,6 @@ h2 {
   text-align: center;
 }
 
-/* 🔥 labels */
 label {
   font-weight: bold;
   font-size: 14px;
@@ -34,23 +34,20 @@ label {
   margin-bottom: 6px;
 }
 
-/* 🔥 inputs */
 input, textarea, select {
   width: 100%;
   padding: 12px;
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 16px; /* مهم للموبايل */
+  font-size: 16px;
   box-sizing: border-box;
-  line-height: 1.5;
 }
 
 textarea {
   min-height: 70px;
 }
 
-/* buttons */
 button {
   width: 100%;
   padding: 12px;
@@ -69,44 +66,40 @@ button {
   background: green;
   color: white;
 }
+
+/* 🔥 الحل النهائي للصوصات */
 .boxes {
   background: white;
   padding: 10px;
   border-radius: 10px;
 
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-
-  width: 100%;
-  box-sizing: border-box;
+  display: block; /* 🔥 كل العناصر تحت بعض */
 }
 
-/* 🔥 كل عنصر بشكل بطاقة صغيرة */
+/* 🔥 كل عنصر سطر كامل */
 .boxes label {
   display: flex;
   align-items: center;
-  gap: 6px;
 
-  padding: 6px 8px;   /* 🔥 صغّرناها */
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  gap: 10px;
+  padding: 10px;
 
-  background: #f9f9f9;
+  border-bottom: 1px solid #eee;
 
-  font-size: 13px;
+  font-size: 14px;
 
-  /* 🔥 أهم إصلاح */
-  max-width: 48%;     /* عمودين بدون تخبيص */
+  width: 100%;
   box-sizing: border-box;
 
   white-space: normal;
-  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
+/* آخر عنصر بدون خط */
+.boxes label:last-child {
+  border-bottom: none;
+}
 
-
-/* table */
 table {
   width: 100%;
   background: white;
@@ -122,14 +115,6 @@ td, th {
 
 hr {
   margin: 15px 0;
-}
-/* 📱 موبايل تحسين إضافي */
-@media (max-width: 600px) {
-  .boxes label {
-    max-width: 28%;
-    font-size: 12px;
-    padding: 2px;
-  }
 }
 
 </style>
@@ -147,7 +132,7 @@ hr {
 
 <label>شو صار بالشفت</label>
 <textarea id="shift"></textarea>
-<br>
+
 <label>شغلات ناقصة</label>
 <textarea id="missing"></textarea>
 
@@ -156,7 +141,7 @@ hr {
 
 <h3>الأقل مبيعاً</h3>
 <div id="worstBox" class="boxes"></div>
-<br>
+
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 
@@ -200,12 +185,12 @@ let sauces = [
 
 window.onload = () => {
 
-  // 🔥 يبدأ فاضي كل مرة (بدون حفظ)
   document.getElementById("date").value =
   new Date().toISOString().split('T')[0];
 
   document.getElementById("bestBox").innerHTML = "";
   document.getElementById("worstBox").innerHTML = "";
+
   document.getElementById("table").innerHTML = `
     <tr>
       <th>الصوص</th>
@@ -220,7 +205,7 @@ window.onload = () => {
   });
 };
 
-// 🔥 إضافة صوص للجدول
+// 🔥 جدول الصوصات
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -231,7 +216,7 @@ function addRow(name="") {
   `;
 }
 
-// 🔥 checkboxes
+// 🔥 إضافة checkboxes
 function addCheck(name){
 
   document.getElementById("bestBox").innerHTML += `
@@ -243,7 +228,7 @@ function addCheck(name){
   `;
 }
 
-// 🔥 إضافة صوص جديد
+// 🔥 إضافة صوص
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){

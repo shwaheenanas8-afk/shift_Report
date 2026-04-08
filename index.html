@@ -82,18 +82,19 @@ button {
 .item {
   display: flex;
   align-items: center;
+  justify-content: flex-start; /* يخلي المحتوى يمين */
   gap: 10px;
+
   padding: 6px 0;
   font-size: 14px;
 
-  /* 🔥 أهم تعديل */
-  white-space: nowrap;   /* يمنع كسر الكلمة */
-  overflow-x: auto;      /* إذا ضاقت الشاشة يعمل سحب بدل كسر */
-  -webkit-overflow-scrolling: touch;
+  width: 100%;
+
+  direction: rtl; /* مهم جداً للعربي + ترتيب يمين */
 }
 
 .item span {
-  white-space: nowrap;   /* تأكيد أن الكلمة تبقى كاملة */
+  white-space: nowrap; /* الكلمة تبقى كاملة */
 }
 /* 🔥 موبايل */
 @media (max-width: 600px) {

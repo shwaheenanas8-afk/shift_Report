@@ -101,7 +101,7 @@ hr {
 
 <h3>الأقل مبيعاً</h3>
 <div id="worstBox" class="boxes"></div>
-
+<br>
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 
@@ -145,8 +145,8 @@ let sauces = [
 ];
 
 window.onload = () => {
-  let today = new Date().toISOString().split('T')[0];
-  document.getElementById("date").value = today;
+  document.getElementById("date").value =
+  new Date().toISOString().split('T')[0];
 
   sauces.forEach(s => {
     addRow(s);
@@ -156,17 +156,20 @@ window.onload = () => {
   loadData();
 };
 
+// 🔥 إضافة صف صوص
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
   row.innerHTML = `
     <td><input value="${name}"></td>
     <td><input type="number" placeholder="0"></td>
-    <td><input placeholder="29/4"></td>
+    <td><input type="text" placeholder="29/4"></td>
   `;
 }
 
+// 🔥 إضافة checkbox
 function addCheck(name){
+
   document.getElementById("bestBox").innerHTML += `
     <label><input type="checkbox" value="${name}"> ${name}</label>
   `;
@@ -176,7 +179,8 @@ function addCheck(name){
   `;
 }
 
-function addSauce() {
+// 🔥 إضافة صوص جديد
+function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){
     addRow(name);
@@ -184,7 +188,8 @@ function addSauce() {
   }
 }
 
-function generate() {
+// 🔥 إنشاء التقرير + نسخ + تصفير
+function generate(){
 
   let cashier = document.getElementById("cashier").value;
   let scrap = document.getElementById("scrap").value;
@@ -196,12 +201,15 @@ function generate() {
   let maintenanceText = document.getElementById("maintenance").value;
 
   let best = [];
-  document.querySelectorAll("#bestBox input:checked").forEach(c => best.push(c.value));
+  document.querySelectorAll("#bestBox input:checked")
+  .forEach(c => best.push(c.value));
 
   let worst = [];
-  document.querySelectorAll("#worstBox input:checked").forEach(c => worst.push(c.value));
+  document.querySelectorAll("#worstBox input:checked")
+  .forEach(c => worst.push(c.value));
 
-  let report = `shift ${date}
+  let report = `
+shift ${date}
 
 شو صار بالشفت:
 ${shiftText}
@@ -235,18 +243,35 @@ ${maintenanceText}
     }
   }
 
-  // 🔥 القسم صار تحت الصوصات في التقرير كمان
-  report += `\nمين سكر الكاش: ${cashier}
+  report += `
+مين سكر الكاش: ${cashier}
 مين رفع السكراب: ${scrap}
 أوبريت: ${operait}
 `;
 
-  navigator.clipboard.writeText(report);
-  alert("✅ تم نسخ التقرير");
+  // 🔥 نسخ + بعدين تصفير
+  navigator.clipboard.writeText(report).then(() => {
 
-  saveData();
+    alert("تم نسخ التقرير ✅");
+
+    // تصفير كل inputs و textareas
+    document.querySelectorAll("input, textarea").forEach(el => {
+      if(el.type !== "checkbox") el.value = "";
+    });
+
+    // إلغاء كل الاختيارات
+    document.querySelectorAll("input[type=checkbox]").forEach(cb => {
+      cb.checked = false;
+    });
+
+    // إعادة التاريخ لليوم
+    document.getElementById("date").value =
+    new Date().toISOString().split('T')[0];
+
+  });
 }
 
+// 🔥 حفظ البيانات
 function saveData(){
   localStorage.setItem("shiftData", JSON.stringify({
     cashier: cashier.value,
@@ -259,6 +284,7 @@ function saveData(){
   }));
 }
 
+// 🔥 تحميل البيانات
 function loadData(){
   let data = JSON.parse(localStorage.getItem("shiftData"));
   if(!data) return;
@@ -271,7 +297,6 @@ function loadData(){
   missing.value = data.missing || "";
   maintenance.value = data.maintenance || "";
 }
-
 </script>
 
 </body>

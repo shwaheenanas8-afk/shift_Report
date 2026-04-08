@@ -66,52 +66,39 @@ button {
   color: white;
 }
 
-/* 🔥 الأعمدة */
-.row {
-  display: flex;
-  gap: 10px;
+/* 🔥 BEST / WORST CENTER STYLE */
+.center-section {
+  text-align: center;
+  margin: 15px 0;
 }
 
-/* كل عمود */
-.col {
-  flex: 1;
-  background: white;
-  padding: 10px;
-  border-radius: 10px;
+.section-title {
+  font-weight: bold;
+  margin: 10px 0;
 }
+
+/* items بدون بوكس */
 .item {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  padding: 6px 0;
+  gap: 8px;
 
-  width: 100%;
-  font-size: 14px;
-
-  direction: rtl; /* أساسي للعربي */
+  padding: 4px 0;
+  font-size: 15px;
 }
 
-/* الكلمة */
+/* النص */
 .item span {
-  white-space: nowrap;  /* ما تنكسر */
+  white-space: nowrap;
 }
 
-/* 🔥 موبايل فقط */
+/* 🔥 موبايل */
 @media (max-width: 600px) {
 
   .item {
-    justify-content: flex-start;
-    flex-direction: row-reverse; /* يخلي الشكل عربي مرتب */
-  }
-
-  .item span {
-    font-size: 15px; /* تكبير بسيط عشان ما يختنق النص */
-  }
-}
-/* 🔥 موبايل */
-@media (max-width: 600px) {
-  .row {
-    flex-direction: column; /* يصيروا تحت بعض */
+    justify-content: center;
+    font-size: 16px;
   }
 }
 
@@ -126,11 +113,6 @@ table {
 td, th {
   padding: 8px;
   text-align: center;
-}
-
-.section-title {
-  margin: 10px 0;
-  font-weight: bold;
 }
 
 hr {
@@ -156,21 +138,20 @@ hr {
 <label>شغلات ناقصة</label>
 <textarea id="missing"></textarea>
 
-<!-- 🔥 أعمدة -->
-<div class="row">
-
-  <div class="col">
-    <div class="section-title">الأكثر مبيعاً</div>
-    <div id="bestList"></div>
-  </div>
-
-  <div class="col">
-    <div class="section-title">الأقل مبيعاً</div>
-    <div id="worstList"></div>
-  </div>
-
+<!-- 🔥 BEST -->
+<div class="center-section">
+  <div class="section-title">الأكثر مبيعاً</div>
+  <div id="bestList"></div>
 </div>
+
+<!-- 🔥 WORST -->
+<div class="center-section">
+  <div class="section-title">الأقل مبيعاً</div>
+  <div id="worstList"></div>
+</div>
+
 <br>
+
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 

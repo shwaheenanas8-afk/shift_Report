@@ -71,35 +71,39 @@ button {
 }
 .boxes {
   background: white;
-  padding: 12px;
+  padding: 10px;
   border-radius: 10px;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* عمودين ثابتين */
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 
   width: 100%;
   box-sizing: border-box;
 }
 
-/* كل عنصر */
+/* 🔥 كل عنصر بشكل بطاقة صغيرة */
 .boxes label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 
-  padding: 10px;
+  padding: 6px 8px;   /* 🔥 صغّرناها */
   border: 1px solid #ddd;
-  border-radius: 10px;
+  border-radius: 8px;
 
   background: #f9f9f9;
 
-  font-size: 14px;
+  font-size: 13px;
 
   /* 🔥 أهم إصلاح */
-  min-width: 0;           /* يمنع الخروج برا */
-  overflow-wrap: anywhere; /* يكسر النص إذا طويل */
+  max-width: 48%;     /* عمودين بدون تخبيص */
+  box-sizing: border-box;
+
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
+
 
 
 /* table */
@@ -119,17 +123,15 @@ td, th {
 hr {
   margin: 15px 0;
 }
-/* 📱 على الموبايل نخليها عمودين مضبوطين */
+/* 📱 موبايل تحسين إضافي */
 @media (max-width: 600px) {
-  .boxes {
-    grid-template-columns: 1fr 1fr;
-  }
-
   .boxes label {
-    font-size: 13px;
-    padding: 8px;
+    max-width: 48%;
+    font-size: 12px;
+    padding: 6px;
   }
 }
+
 </style>
 
 </head>

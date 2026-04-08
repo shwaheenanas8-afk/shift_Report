@@ -79,8 +79,6 @@ button {
   padding: 10px;
   border-radius: 10px;
 }
-
-/* عنصر داخل القائمة */
 .item {
   display: flex;
   align-items: center;
@@ -88,9 +86,15 @@ button {
   padding: 6px 0;
   font-size: 14px;
 
-  white-space: nowrap;
+  /* 🔥 أهم تعديل */
+  white-space: nowrap;   /* يمنع كسر الكلمة */
+  overflow-x: auto;      /* إذا ضاقت الشاشة يعمل سحب بدل كسر */
+  -webkit-overflow-scrolling: touch;
 }
 
+.item span {
+  white-space: nowrap;   /* تأكيد أن الكلمة تبقى كاملة */
+}
 /* 🔥 موبايل */
 @media (max-width: 600px) {
   .row {

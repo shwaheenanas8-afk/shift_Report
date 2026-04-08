@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- 🔥 منع الزوم -->
+<!-- منع الزوم -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>تقرير الشفت</title>
@@ -67,37 +67,47 @@ button {
   color: white;
 }
 
-/* 🔥 الحل النهائي للصوصات */
+/* 🔥 BOXES (الحل النهائي) */
 .boxes {
   background: white;
-  padding: 10px;
+  padding: 12px;
   border-radius: 10px;
 
-  display: block; /* 🔥 كل العناصر تحت بعض */
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  overflow: hidden; /* يمنع الخروج برا */
 }
 
-/* 🔥 كل عنصر سطر كامل */
+/* 🔥 كل عنصر داخل البوكس */
 .boxes label {
   display: flex;
   align-items: center;
+  justify-content: flex-start;
 
   gap: 10px;
-  padding: 10px;
 
-  border-bottom: 1px solid #eee;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: #fafafa;
 
   font-size: 14px;
 
   width: 100%;
   box-sizing: border-box;
 
-  white-space: normal;
+  /* مهم جداً */
+  white-space: normal; /* يسمح بالنزول سطر بدل ما يطلع برا */
   word-break: break-word;
 }
 
-/* آخر عنصر بدون خط */
-.boxes label:last-child {
-  border-bottom: none;
+/* checkbox حجم ثابت */
+.boxes input[type="checkbox"] {
+  flex-shrink: 0;
 }
 
 table {
@@ -205,7 +215,7 @@ window.onload = () => {
   });
 };
 
-// 🔥 جدول الصوصات
+// جدول
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -216,7 +226,7 @@ function addRow(name="") {
   `;
 }
 
-// 🔥 إضافة checkboxes
+// checkboxes
 function addCheck(name){
 
   document.getElementById("bestBox").innerHTML += `
@@ -228,7 +238,7 @@ function addCheck(name){
   `;
 }
 
-// 🔥 إضافة صوص
+// إضافة صوص
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){
@@ -237,7 +247,7 @@ function addSauce(){
   }
 }
 
-// 🔥 نسخ التقرير
+// نسخ التقرير
 function generate(){
 
   let cashier = document.getElementById("cashier").value;
@@ -274,28 +284,6 @@ ${worst.join(", ")}
 
 شغلات بدها صيانة:
 ${maintenanceText}
-
-الصوصات:
-`;
-
-  let rows = document.getElementById("table").rows;
-
-  for(let i=1;i<rows.length;i++){
-    let inputs = rows[i].querySelectorAll("input");
-
-    let name = inputs[0].value.trim();
-    let qty = inputs[1].value.trim();
-    let exp = inputs[2].value.trim();
-
-    if(name){
-      report += `${name} ${qty || 0} ${exp}\n`;
-    }
-  }
-
-  report += `
-مين سكر الكاش: ${cashier}
-مين رفع السكراب: ${scrap}
-أوبريت: ${operait}
 `;
 
   navigator.clipboard.writeText(report);

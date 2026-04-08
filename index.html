@@ -2,10 +2,14 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 🔥 منع الزوم -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>تقرير الشفت</title>
 
 <style>
+
 body {
   font-family: Arial;
   direction: rtl;
@@ -26,29 +30,31 @@ h2 {
 label {
   font-weight: bold;
   font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
 }
 
 input, textarea, select {
   width: 100%;
-  padding: 10px;
-  margin: 5px 0 10px 0;
+  padding: 12px;
+  margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  font-size: 14px;
+  font-size: 16px;
   box-sizing: border-box;
 }
 
 textarea {
-  min-height: 60px;
+  min-height: 70px;
 }
 
 button {
   width: 100%;
   padding: 12px;
-  margin-top: 8px;
+  margin-top: 10px;
   border: none;
   border-radius: 10px;
-  font-size: 15px;
+  font-size: 16px;
 }
 
 .add-btn {
@@ -61,26 +67,52 @@ button {
   color: white;
 }
 
+/* 🔥 BOXES (التعديل الجديد) */
 .boxes {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
   background: white;
   padding: 10px;
   border-radius: 10px;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
+/* 🔥 شكل كل عنصر */
 .boxes label {
-  font-size: 13px;
-  font-weight: normal;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  background: #f9f9f9;
+  white-space: nowrap;
+}
+
+table {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+td, th {
+  padding: 8px;
+  text-align: center;
 }
 
 hr {
   margin: 15px 0;
 }
+
 </style>
 
 </head>
+
 <body>
 
 <div class="container">
@@ -117,7 +149,6 @@ hr {
 
 <button class="add-btn" onclick="addSauce()">➕ إضافة صوص</button>
 
-<!-- 🔥 هاد القسم صار تحت الصوصات -->
 <hr>
 
 <label>مين سكر الكاش</label>
@@ -145,18 +176,28 @@ let sauces = [
 ];
 
 window.onload = () => {
+
   document.getElementById("date").value =
   new Date().toISOString().split('T')[0];
+
+  document.getElementById("bestBox").innerHTML = "";
+  document.getElementById("worstBox").innerHTML = "";
+
+  document.getElementById("table").innerHTML = `
+    <tr>
+      <th>الصوص</th>
+      <th>كمية</th>
+      <th>تاريخ</th>
+    </tr>
+  `;
 
   sauces.forEach(s => {
     addRow(s);
     addCheck(s);
   });
-
-  loadData();
 };
 
-// 🔥 إضافة صف صوص
+// 🔥 جدول الصوصات
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -167,7 +208,7 @@ function addRow(name="") {
   `;
 }
 
-// 🔥 إضافة checkbox
+// 🔥 checkboxes
 function addCheck(name){
 
   document.getElementById("bestBox").innerHTML += `
@@ -179,7 +220,7 @@ function addCheck(name){
   `;
 }
 
-// 🔥 إضافة صوص جديد
+// 🔥 إضافة صوص
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){
@@ -188,7 +229,7 @@ function addSauce(){
   }
 }
 
-// 🔥 إنشاء التقرير + نسخ + تصفير
+// 🔥 نسخ التقرير
 function generate(){
 
   let cashier = document.getElementById("cashier").value;
@@ -249,54 +290,10 @@ ${maintenanceText}
 أوبريت: ${operait}
 `;
 
-  // 🔥 نسخ + بعدين تصفير
-  navigator.clipboard.writeText(report).then(() => {
-
-    alert("تم نسخ التقرير ✅");
-
-    // تصفير كل inputs و textareas
-    document.querySelectorAll("input, textarea").forEach(el => {
-      if(el.type !== "checkbox") el.value = "";
-    });
-
-    // إلغاء كل الاختيارات
-    document.querySelectorAll("input[type=checkbox]").forEach(cb => {
-      cb.checked = false;
-    });
-
-    // إعادة التاريخ لليوم
-    document.getElementById("date").value =
-    new Date().toISOString().split('T')[0];
-
-  });
+  navigator.clipboard.writeText(report);
+  alert("تم النسخ ✅");
 }
 
-// 🔥 حفظ البيانات
-function saveData(){
-  localStorage.setItem("shiftData", JSON.stringify({
-    cashier: cashier.value,
-    scrap: scrap.value,
-    operait: operait.value,
-    date: date.value,
-    shift: shift.value,
-    missing: missing.value,
-    maintenance: maintenance.value
-  }));
-}
-
-// 🔥 تحميل البيانات
-function loadData(){
-  let data = JSON.parse(localStorage.getItem("shiftData"));
-  if(!data) return;
-
-  cashier.value = data.cashier || "";
-  scrap.value = data.scrap || "";
-  operait.value = data.operait || "";
-  date.value = data.date || "";
-  shift.value = data.shift || "";
-  missing.value = data.missing || "";
-  maintenance.value = data.maintenance || "";
-}
 </script>
 
 </body>

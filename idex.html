@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shift Report</title>
+
+<style>
+body{
+  font-family: Arial;
+  direction: rtl;
+  margin:0;
+  background:#f2f2f2;
+}
+
+.container{
+  max-width:600px;
+  margin:auto;
+  padding:15px;
+}
+
+h2{
+  text-align:center;
+}
+
+/* inputs */
+input, textarea, select{
+  width:100%;
+  padding:12px;
+  margin:6px 0 12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  box-sizing:border-box;
+  font-size:16px; /* مهم للموبايل */
+}
+
+/* 🔥 الأكثر / الأقل */
+.boxes{
+  background:#fff;
+  padding:10px;
+  border-radius:10px;
+}
+
+.item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  font-size:16px;
+}
+
+.item input{
+  width:20px;
+  height:20px;
+}
+
+/* 🔥 الصوصات (أهم جزء) */
+.sauce{
+  background:#fff;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.sauce-name{
+  font-weight:bold;
+  margin-bottom:6px;
+}
+
+.sauce input{
+  width:100%;
+  margin-top:8px;
+  padding:10px;
+  font-size:16px;
+}
+
+/* buttons */
+button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+}
+
+.add{background:#007bff;color:#fff;}
+.copy{background:green;color:#fff;}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>📋 Shift Report</h2>
+
+<label>تاريخ الشفت</label>
+<input type="date" id="date">
+
+<label>شو صار بالشفت</label>
+<textarea id="shift"></textarea>
+
+<h3>الأكثر مبيعاً</h3>
+<div id="bestBox" class="boxes"></div>
+
+<h3>الأقل مبيعاً</h3>
+<div id="worstBox" class="boxes"></div>
+
+<h3>الصوصات</h3>
+<div id="sauceBox"></div>
+
+<button class="add" onclick="addSauce()">➕ إضافة صوص</button>
+
+<hr>
+
+<input id="cashier" placeholder="مين سكر الكاش">
+<input id="scrap" placeholder="مين رفع السكراب">
+
+<select id="operait">
+  <option value="">أوبريت</option>
+  <option value="100%">100%</option>
+  <option value="خربان">خربان</option>
+</select>
+
+<button class="copy" onclick="generate()">📋 نسخ التقرير</button>
+
+</div>
+
+<script>
+
+let sauces = [
+"pistachio","hazelnut","chai karak",
+"white mocha","hot chocolate",
+"spanish latte","salted caramel","rose","lotus"
+];
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("date").value =
+  new Date().toISOString().split('T')[0];
+
+  render();
+});
+
+function render(){
+
+  let bestBox = document.getElementById("bestBox");
+  let worstBox = document.getElementById("worstBox");
+  let sauceBox = document.getElementById("sauceBox");
+
+  bestBox.innerHTML = "";
+  worstBox.innerHTML = "";
+  sauceBox.innerHTML = "";
+
+  sauces.forEach(s => {
+
+    bestBox.innerHTML += `
+      <label class="item">
+        <input type="checkbox" value="${s}">
+        ${s}
+      </label>
+    `;
+
+    worstBox.innerHTML += `
+      <label class="item">
+        <input type="checkbox" value="${s}">
+        ${s}
+      </label>
+    `;
+
+    sauceBox.innerHTML += `
+      <div class="sauce">
+        <div class="sauce-name">${s}</div>
+        <input type="number" placeholder="الكمية">
+        <input type="date">
+      </div>
+    `;
+  });
+}
+
+function addSauce(){
+  let name = prompt("اسم الصوص:");
+  if(name){
+    sauces.push(name);
+    render();
+  }
+}
+
+function generate(){
+
+  let best = [];
+  document.querySelectorAll("#bestBox input:checked")
+  .forEach(x => best.push(x.value));
+
+  let worst = [];
+  document.querySelectorAll("#worstBox input:checked")
+  .forEach(x => worst.push(x.value));
+
+  let cards = document.querySelectorAll(".sauce");
+
+  let report = `
+shift ${document.getElementById("date").value}
+
+${document.getElementById("shift").value}
+
+الأكثر مبيعاً:
+${best.join(", ")}
+
+الأقل مبيعاً:
+${worst.join(", ")}
+
+الصوصات:
+`;
+
+  cards.forEach(c => {
+    let name = c.querySelector(".sauce-name").innerText;
+    let qty = c.querySelectorAll("input")[0].value;
+    let date = c.querySelectorAll("input")[1].value;
+
+    report += `${name} - ${qty || 0} - ${date}\n`;
+  });
+
+  report += `
+مين سكر الكاش: ${cashier.value}
+مين رفع السكراب: ${scrap.value}
+أوبريت: ${operait.value}
+`;
+
+  navigator.clipboard.writeText(report);
+  alert("تم النسخ ✅");
+}
+
+</script>
+
+</body>
+</html>

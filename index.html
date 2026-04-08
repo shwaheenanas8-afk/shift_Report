@@ -81,22 +81,32 @@ button {
 }
 .item {
   display: flex;
-  flex-direction: row-reverse; /* يخلي الترتيب عربي مضبوط */
   align-items: center;
-  justify-content: flex-start;
-
   gap: 10px;
   padding: 6px 0;
 
   width: 100%;
   font-size: 14px;
 
-  direction: rtl; /* مهم للعربي */
+  direction: rtl; /* أساسي للعربي */
 }
 
+/* الكلمة */
 .item span {
-  white-space: nowrap; /* الكلمة تبقى كاملة */
-  text-align: right;
+  white-space: nowrap;  /* ما تنكسر */
+}
+
+/* 🔥 موبايل فقط */
+@media (max-width: 600px) {
+
+  .item {
+    justify-content: flex-start;
+    flex-direction: row-reverse; /* يخلي الشكل عربي مرتب */
+  }
+
+  .item span {
+    font-size: 15px; /* تكبير بسيط عشان ما يختنق النص */
+  }
 }
 /* 🔥 موبايل */
 @media (max-width: 600px) {

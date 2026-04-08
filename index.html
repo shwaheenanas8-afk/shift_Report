@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 
-<!-- منع الزوم -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>تقرير الشفت</title>
@@ -19,7 +18,7 @@ body {
 
 .container {
   padding: 15px;
-  max-width: 650px;
+  max-width: 800px;
   margin: auto;
 }
 
@@ -67,47 +66,36 @@ button {
   color: white;
 }
 
-/* 🔥 BOXES (الحل النهائي) */
-.boxes {
-  background: white;
-  padding: 12px;
-  border-radius: 10px;
-
+/* 🔥 الأعمدة */
+.row {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-
-  width: 100%;
-  box-sizing: border-box;
-
-  overflow: hidden; /* يمنع الخروج برا */
+  gap: 10px;
 }
 
-/* 🔥 كل عنصر داخل البوكس */
-.boxes label {
+/* كل عمود */
+.col {
+  flex: 1;
+  background: white;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+/* عنصر داخل القائمة */
+.item {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-
   gap: 10px;
-
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: #fafafa;
-
+  padding: 6px 0;
   font-size: 14px;
 
-  width: 100%;
-  box-sizing: border-box;
-
-  /* مهم جداً */
-  white-space: normal; /* يسمح بالنزول سطر بدل ما يطلع برا */
-  word-break: break-word;
+  white-space: nowrap;
 }
 
-/* checkbox حجم ثابت */
-.boxes input[type="checkbox"] {
-  flex-shrink: 0;
+/* 🔥 موبايل */
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column; /* يصيروا تحت بعض */
+  }
 }
 
 table {
@@ -121,6 +109,11 @@ table {
 td, th {
   padding: 8px;
   text-align: center;
+}
+
+.section-title {
+  margin: 10px 0;
+  font-weight: bold;
 }
 
 hr {
@@ -146,12 +139,21 @@ hr {
 <label>شغلات ناقصة</label>
 <textarea id="missing"></textarea>
 
-<h3>الأكثر مبيعاً</h3>
-<div id="bestBox" class="boxes"></div>
+<!-- 🔥 أعمدة -->
+<div class="row">
 
-<h3>الأقل مبيعاً</h3>
-<div id="worstBox" class="boxes"></div>
+  <div class="col">
+    <div class="section-title">الأكثر مبيعاً</div>
+    <div id="bestList"></div>
+  </div>
 
+  <div class="col">
+    <div class="section-title">الأقل مبيعاً</div>
+    <div id="worstList"></div>
+  </div>
+
+</div>
+<br>
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 
@@ -198,8 +200,8 @@ window.onload = () => {
   document.getElementById("date").value =
   new Date().toISOString().split('T')[0];
 
-  document.getElementById("bestBox").innerHTML = "";
-  document.getElementById("worstBox").innerHTML = "";
+  document.getElementById("bestList").innerHTML = "";
+  document.getElementById("worstList").innerHTML = "";
 
   document.getElementById("table").innerHTML = `
     <tr>
@@ -229,12 +231,18 @@ function addRow(name="") {
 // checkboxes
 function addCheck(name){
 
-  document.getElementById("bestBox").innerHTML += `
-    <label><input type="checkbox" value="${name}"> ${name}</label>
+  document.getElementById("bestList").innerHTML += `
+    <div class="item">
+      <input type="checkbox" value="${name}">
+      <span>${name}</span>
+    </div>
   `;
 
-  document.getElementById("worstBox").innerHTML += `
-    <label><input type="checkbox" value="${name}"> ${name}</label>
+  document.getElementById("worstList").innerHTML += `
+    <div class="item">
+      <input type="checkbox" value="${name}">
+      <span>${name}</span>
+    </div>
   `;
 }
 
@@ -260,11 +268,11 @@ function generate(){
   let maintenanceText = document.getElementById("maintenance").value;
 
   let best = [];
-  document.querySelectorAll("#bestBox input:checked")
+  document.querySelectorAll("#bestList input:checked")
   .forEach(c => best.push(c.value));
 
   let worst = [];
-  document.querySelectorAll("#worstBox input:checked")
+  document.querySelectorAll("#worstList input:checked")
   .forEach(c => worst.push(c.value));
 
   let report = `

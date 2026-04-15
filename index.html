@@ -79,15 +79,18 @@ button {
   border-radius: 10px;
 }
 
-/* ✅ التعديل هون */
+/* ✅ التعديل النهائي */
 .item {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   width: 100%;
   font-size: 15px;
-  flex-direction: row-reverse;
+}
+
+.item input {
+  margin: 0;
 }
 
 .item span {
@@ -259,15 +262,15 @@ function addCheck(name){
 
   document.getElementById("bestList").innerHTML += `
     <div class="item">
-      <input type="checkbox" value="${name}">
       <span>${name}</span>
+      <input type="checkbox" value="${name}">
     </div>
   `;
 
   document.getElementById("worstList").innerHTML += `
     <div class="item">
-      <input type="checkbox" value="${name}">
       <span>${name}</span>
+      <input type="checkbox" value="${name}">
     </div>
   `;
 }

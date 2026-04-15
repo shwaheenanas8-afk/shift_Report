@@ -66,51 +66,41 @@ button {
   color: white;
 }
 
-/* 🔥 الأعمدة */
+/* الأعمدة */
 .row {
   display: flex;
   gap: 10px;
 }
 
-/* كل عمود */
 .col {
   flex: 1;
   background: white;
   padding: 10px;
   border-radius: 10px;
 }
+
 .item {
   display: flex;
-  justify-content: center;  /* يخلي كلشي بالنص */
+  justify-content: center;
   align-items: center;
   gap: 8px;
-
   width: 100%;
   text-align: center;
-
   font-size: 15px;
 }
 
-/* الكلمة */
 .item span {
-  white-space: nowrap;  /* ما تنكسر */
+  white-space: nowrap;
 }
 
-/* 🔥 موبايل فقط */
+/* موبايل */
 @media (max-width: 600px) {
-.item {
-    justify-content: center;
-    width: 100%;
+  .item {
+    justify-content: right;
   }
 
-  .item span {
-    font-size: 15px; /* تكبير بسيط عشان ما يختنق النص */
-  }
-}
-/* 🔥 موبايل */
-@media (max-width: 600px) {
   .row {
-    flex-direction: column; /* يصيروا تحت بعض */
+    flex-direction: column;
   }
 }
 
@@ -155,7 +145,6 @@ hr {
 <label>شغلات ناقصة</label>
 <textarea id="missing"></textarea>
 
-<!-- 🔥 أعمدة -->
 <div class="row">
 
   <div class="col">
@@ -169,7 +158,9 @@ hr {
   </div>
 
 </div>
+
 <br>
+
 <label>شغلات بدها صيانة</label>
 <textarea id="maintenance"></textarea>
 
@@ -233,18 +224,38 @@ window.onload = () => {
   });
 };
 
-// جدول
+// إضافة صف
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
   row.innerHTML = `
     <td><input value="${name}"></td>
     <td><input type="number" placeholder="0"></td>
-    <td><input type="text" placeholder="29/4"></td>
+    <td><input type="text" placeholder="29/4" class="date-input"></td>
   `;
+
+  let dateInput = row.querySelector(".date-input");
+
+  dateInput.addEventListener("input", function(){
+
+    let today = new Date();
+    let day = today.getDate();
+    let month = today.getMonth() + 1;
+
+    let todayText = day + "/" + month;
+
+    if(this.value.trim() === todayText){
+      this.style.background = "red";
+      this.style.color = "white";
+    } else {
+      this.style.background = "";
+      this.style.color = "";
+    }
+
+  });
 }
 
-// checkboxes
+// checkbox
 function addCheck(name){
 
   document.getElementById("bestList").innerHTML += `
@@ -271,7 +282,7 @@ function addSauce(){
   }
 }
 
-// نسخ التقرير
+// توليد التقرير
 function generate(){
 
   let cashier = document.getElementById("cashier").value;
@@ -291,23 +302,47 @@ function generate(){
   document.querySelectorAll("#worstList input:checked")
   .forEach(c => worst.push(c.value));
 
-  let report = `
-shift ${date}
+  let saucesData = [];
+  let rows = document.querySelectorAll("#table tr");
 
-شو صار بالشفت:
+  rows.forEach((row, i) => {
+    if(i === 0) return;
+
+    let inputs = row.querySelectorAll("input");
+
+    let name = inputs[0].value;
+    let qty = inputs[1].value;
+    let date = inputs[2].value;
+
+    if(name){
+      saucesData.push(`${name} - ${qty} - ${date}`);
+    }
+  });
+
+  let report = `
+📋 shift ${date}
+
+🧾 شو صار بالشفت:
 ${shiftText}
 
-شغلات ناقصة:
+❌ شغلات ناقصة:
 ${missingText}
 
-الأكثر مبيعاً:
+🔥 الأكثر مبيعاً:
 ${best.join(", ")}
 
-الأقل مبيعاً:
+🐢 الأقل مبيعاً:
 ${worst.join(", ")}
 
-شغلات بدها صيانة:
+🛠 شغلات بدها صيانة:
 ${maintenanceText}
+
+🥤 الصوصات:
+${saucesData.join("\n")}
+
+👤 الكاشير: ${cashier}
+🧹 السكراب: ${scrap}
+⚙️ الأوبريت: ${operait}
 `;
 
   navigator.clipboard.writeText(report);

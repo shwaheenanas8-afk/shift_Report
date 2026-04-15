@@ -79,26 +79,26 @@ button {
   border-radius: 10px;
 }
 
-/* ✅ الحل النهائي */
 .item {
   display: flex;
+  justify-content: center;
   align-items: center;
-  justify-content: flex-end;
   gap: 8px;
   width: 100%;
+  text-align: center;
   font-size: 15px;
 }
 
 .item span {
-  flex: unset;
-}
-
-.item input {
-  margin: 0;
+  white-space: nowrap;
 }
 
 /* موبايل */
 @media (max-width: 600px) {
+  .item {
+    justify-content: right;
+  }
+
   .row {
     flex-direction: column;
   }
@@ -224,6 +224,7 @@ window.onload = () => {
   });
 };
 
+// إضافة صف
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -254,23 +255,25 @@ function addRow(name="") {
   });
 }
 
+// checkbox
 function addCheck(name){
 
   document.getElementById("bestList").innerHTML += `
     <div class="item">
-      <span>${name}</span>
       <input type="checkbox" value="${name}">
+      <span>${name}</span>
     </div>
   `;
 
   document.getElementById("worstList").innerHTML += `
     <div class="item">
-      <span>${name}</span>
       <input type="checkbox" value="${name}">
+      <span>${name}</span>
     </div>
   `;
 }
 
+// إضافة صوص
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){
@@ -279,6 +282,7 @@ function addSauce(){
   }
 }
 
+// توليد التقرير
 function generate(){
 
   let cashier = document.getElementById("cashier").value;

@@ -79,30 +79,26 @@ button {
   border-radius: 10px;
 }
 
-/* ✅ التعديل النهائي */
+/* ✅ الحل النهائي */
 .item {
   display: flex;
-  justify-content: flex-end;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  gap: 8px;
   width: 100%;
   font-size: 15px;
+}
+
+.item span {
+  flex: unset;
 }
 
 .item input {
   margin: 0;
 }
 
-.item span {
-  white-space: nowrap;
-}
-
 /* موبايل */
 @media (max-width: 600px) {
-  .item {
-    justify-content: flex-end;
-  }
-
   .row {
     flex-direction: column;
   }

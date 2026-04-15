@@ -79,14 +79,15 @@ button {
   border-radius: 10px;
 }
 
+/* ✅ التعديل هون */
 .item {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 8px;
   width: 100%;
-  text-align: center;
   font-size: 15px;
+  flex-direction: row-reverse;
 }
 
 .item span {
@@ -96,7 +97,7 @@ button {
 /* موبايل */
 @media (max-width: 600px) {
   .item {
-    justify-content: right;
+    justify-content: flex-end;
   }
 
   .row {
@@ -224,7 +225,6 @@ window.onload = () => {
   });
 };
 
-// إضافة صف
 function addRow(name="") {
   let row = document.getElementById("table").insertRow();
 
@@ -255,7 +255,6 @@ function addRow(name="") {
   });
 }
 
-// checkbox
 function addCheck(name){
 
   document.getElementById("bestList").innerHTML += `
@@ -273,7 +272,6 @@ function addCheck(name){
   `;
 }
 
-// إضافة صوص
 function addSauce(){
   let name = prompt("اسم الصوص:");
   if(name){
@@ -282,7 +280,6 @@ function addSauce(){
   }
 }
 
-// توليد التقرير
 function generate(){
 
   let cashier = document.getElementById("cashier").value;

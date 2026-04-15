@@ -138,7 +138,14 @@ hr {
 
 <label>تاريخ الشفت</label>
 <input type="date" id="date">
+<label> الشفت</label>
+<select id="shiftType">
+  <option value="">اختر</option>
+  <option value="Morning">Morning ☀️</option>
+  <option value="Night">Night 🌙</option>
+  <option value="Night"> C 🌙</option>
 
+</select>
 <label>شو صار بالشفت</label>
 <textarea id="shift"></textarea>
 
@@ -284,7 +291,7 @@ function addSauce(){
 
 // توليد التقرير
 function generate(){
-
+let shiftType = document.getElementById("shiftType").value;
   let cashier = document.getElementById("cashier").value;
   let scrap = document.getElementById("scrap").value;
   let operait = document.getElementById("operait").value;
@@ -318,9 +325,8 @@ function generate(){
       saucesData.push(`${name} - ${qty} - ${date}`);
     }
   });
-
-  let report = `
-📋 shift ${date}
+let report = `
+📋 ${shiftType} shift ${date}
 
 🧾 شو صار بالشفت:
 ${shiftText}
